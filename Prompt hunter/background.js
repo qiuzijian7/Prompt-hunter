@@ -199,40 +199,43 @@ async function saveToNotion(imageUrl, prompt, property, url, additionalText) {
           throw new Error(
             `Error appending child block to Notion page. ${JSON.stringify(error)}`
           );
-        } else {
+        } 
+        else {
           console.log("Appended child block to Notion page successfully!");
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.error("Error appending child block to Notion page:", error);
-          }
-        }
-      } catch (error) {
-        console.error("Error saving to Notion:", error);
-        }
-        }
+      }
+    }
+  } 
+  catch (error) {
+    console.error("Error saving to Notion:", error);
+  }
+}
 
-        chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-          if (changeInfo.url) {
-            if (changeInfo.url.includes("https://www.midjourney.com/app/jobs/") || changeInfo.url.includes("https://www.midjourney.com/app/feed/")) {
-              try {
-                await chrome.scripting.executeScript({
-                  target: { tabId: tabId },
-                  files: ["content.js"],
-                });
-                console.log("Content script injected.");
-              } catch (error) {
-                console.error("Error injecting content script:", error);
-              }
-            } else if (changeInfo.url.includes("https://nijijourney.com/en/app/jobs/") || changeInfo.url.includes("https://nijijourney.com/en/app/feed/")) {
-              try {
-                await chrome.scripting.executeScript({
-                  target: { tabId: tabId },
-                  files: ["content-niji.js"],
-                });
-                console.log("Content-niji script injected.");
-              } catch (error) {
-                console.error("Error injecting content-niji script:", error);
-              }
-            }
-          }
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (changeInfo.url) {
+    if (changeInfo.url.includes("https://www.midjourney.com/app/jobs/") || changeInfo.url.includes("https://www.midjourney.com/app/feed/")) {
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tabId },
+          files: ["content.js"],
         });
+        console.log("Content script injected.");
+      } catch (error) {
+        console.error("Error injecting content script:", error);
+      }
+    } else if (changeInfo.url.includes("https://nijijourney.com/en/app/jobs/") || changeInfo.url.includes("https://nijijourney.com/en/app/feed/")) {
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tabId },
+          files: ["content-niji.js"],
+        });
+        console.log("Content-niji script injected.");
+      } catch (error) {
+        console.error("Error injecting content-niji script:", error);
+      }
+    }
+  }
+});
